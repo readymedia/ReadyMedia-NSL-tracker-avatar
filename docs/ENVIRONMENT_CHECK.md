@@ -1,41 +1,40 @@
-# Environment Verification Checklist
+# 💻 Environment Check
 
-Before starting implementation, verify:
+**Version**: 0.2.0
+**Last Updated**: 2025-12-16
 
-## ✅ System Requirements
+Use this guide to verify your PC is ready for AI tracking.
 
-- [ ] Windows 10/11 or Linux
-- [ ] Python 3.11+ installed
-- [ ] pip and venv available
-- [ ] Git installed
+---
 
-## ✅ GPU & CUDA (for Phase 2+)
+## 🟢 Quick Check Script
 
-- [ ] NVIDIA GPU present
-- [ ] CUDA 11.8 or 12.x installed
-- [ ] `nvidia-smi` command works
-- [ ] cuDNN installed (optional)
+Run this command in your terminal:
 
-## ✅ External Tools
+```bash
+python -c "import torch; import mmpose; print(f'Torch: {torch.__version__}, CUDA: {torch.cuda.is_available()}, MMPose: {mmpose.__version__}')"
+```
 
-- [ ] FFmpeg installed and in PATH
-- [ ] `ffmpeg -version` works
-- [ ] `ffprobe` available
+### ✅ Expected Output (Golden Path)
+```
+Torch: 2.1.2+cu118, CUDA: True, MMPose: 1.3.2
+```
 
-## ✅ Disk Space
+---
 
-- [ ] At least 50 GB free (for workspace)
-- [ ] Fast SSD (recommended)
+## 🔴 Troubleshooting Scores
 
-## ✅ Project Files
+| Component | Status | Fix |
+|-----------|--------|-----|
+| **CUDA** | `False` | You are running on CPU. RTMPose will be 10x slower. Reinstall PyTorch with CUDA 11.8 (See DEPLOYMENT.md). |
+| **Torch** | `2.4.x` | Too new! MMPose works best with 2.1.0 - 2.1.2. Downgrade torch. |
+| **MMPose** | `Error` | Library not found. Run `python scripts/setup_phase2.py`. |
 
-- [ ] All 11 documentation files present
-- [ ] All 14 test videos in video-eksempler/
-- [ ] Can open and read video files
+---
 
-## ✅ Python Dependencies (after setup)
+## 💾 Storage Check
 
-- [ ] Can `import cv2`
-- [ ] Can `import mediapipe`
-- [ ] Can `import pandas`
-- [ ] All requirements.txt packages installed
+RTMPose downloads models to:
+`C:\Users\<YOU>\.cache\torch\hub\checkpoints`
+
+Ensure you have 5-10GB free on C: drive, or set `TORCH_HOME` to move the cache.

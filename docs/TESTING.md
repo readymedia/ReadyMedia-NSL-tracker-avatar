@@ -1,60 +1,64 @@
-# Testing Strategy
+# 🧪 Testing Strategy
 
-## 🧪 Unit Tests
+**Version**: 0.2.0 (Phase 2)
+**Last Updated**: 2025-12-16
 
-We use `pytest` for unit testing.
+This document outlines how we validate the correctness and performance of the NSL Avatar system.
 
-### Running Tests
+---
+
+## 🎯 Testing Levels
+
+### 1. Unit Tests (Functionality)
+*   **Goal**: Ensure individual functions work (e.g., "Does the quality scorer calculate correctly?").
+*   **Tools**: `pytest`.
+*   **Location**: `tests/`.
+*   **Run**: `pytest tests/`
+
+### 2. Integration Tests (Pipeline)
+*   **Goal**: Ensure the whole pipeline runs from Video -> Parquet without crashing.
+*   **Method**: "Smoke Test".
+*   **Command**:
+    ```bash
+    python -m tracker_app process-video video-eksempler/5.mp4 --provider mediapipe
+    ```
+*   **Success Criteria**: No exceptions, output files created in `workspace/tracks`.
+
+### 3. Validation Tests (Quality)
+*   **Goal**: Ensure the AI output is *accurate* enough for a MetaHuman.
+*   **Method**: Comparison against Ground Truth (or SOTA baseline).
+*   **Protocol**: See [PROVIDER_TEST_PROTOCOL.md](PROVIDER_TEST_PROTOCOL.md).
+*   **Metrics**:
+    *   **Jitter**: Frame-to-frame noise.
+    *   **Inversion**: Left/Right hand swaps.
+    *   **Ghosting**: False positives when hands are out of frame.
+
+---
+
+## 🔍 Validation Checklists
+
+### New Release Checklist
+Before pushing `main` branch:
+1.  [ ] Clean install environment (`requirements.txt`).
+2.  [ ] Run `scripts/setup_phase2.py` (Verify MMPose install).
+3.  [ ] Process `5.mp4` with MediaPipe (Verify speed).
+4.  [ ] Process `5.mp4` with RTMPose (Verify quality).
+5.  [ ] Check `meta.json` quality score > 0.5 for both.
+6.  [ ] Open `visualization.mp4` and visually check for "glitches".
+
+### Environment Verification
+To verify GPU usage:
 ```bash
-pytest
+python -c "import torch; print(torch.cuda.is_available())"
+# Must return True
 ```
 
-### Coverage
-```bash
-pytest --cov=tracker_app
-```
+---
 
-## 🎥 Integration Tests
-
-### Single Video Test
-To test the full pipeline on a single video without adding it to the batch job queue:
-
-```bash
-python -m tracker_app process-video video-eksempler/5.mp4 --word "test" --visualize
-```
-
-**What to check:**
-1. **Output files created**:
-   - `meta.json`
-   - `tracking.parquet`
-   - `tracking.jsonl.gz`
-   - `visualization.mp4`
-2. **Quality Score**: Check `meta.json` for `quality_score > 0.5`.
-3. **Visualization**: Watch `visualization.mp4`. Landmarks should stick to body/hands.
-
-### Batch Test
-To test the batch ingestion system:
-
-1. **Ingest Manifest**:
-   ```bash
-   python -m tracker_app ingest tests/fixtures/sample_manifest.csv --dry-run
-   ```
-
-2. **Run Batch**:
-   ```bash
-   python -m tracker_app run --limit 5
-   ```
-
-## 🖥️ GUI Testing (Manual)
-
-1. **Launch**: `python -m scripts.gui`
-2. **Process**: Select 1 video in "Process" tab and run. Verify live preview updates.
-3. **Verify**: Go to "Browse" tab and find the processed video.
-4. **Dashboard**: Check "Dashboard" tab to see if counts increased.
-
-## 🐛 Debugging
-
-If tracking fails or quality is low:
-1. **Enable Visualization**: Always use `--visualize` to see what the model sees.
-2. **Check JSONL**: Open `tracking.jsonl.gz` to see raw confidence scores.
-3. **Logs**: Check `workspace/logs/` for detailed error traces.
+## 🐛 Bug Reporting
+See [BUGS.md](BUGS.md) for known issues.
+When reporting a bug, include:
+1.  Video filename.
+2.  Provider used.
+3.  Log output (Error message).
+4.  Resulting `meta.json`.
