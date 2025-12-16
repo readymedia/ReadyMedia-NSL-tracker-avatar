@@ -1,0 +1,16 @@
+{
+  "quality_score": 0.46958859042371287,
+  "issues": [
+    {
+      "type": "low_hand_visibility",
+      "severity": "warning",
+      "value": 0.3448275862068966
+    },
+    {
+      "type": "low_face_coverage",
+      "severity": "info",
+      "value": 0.0
+    }
+  ],
+  "frames": 29
+}

@@ -1,0 +1,11 @@
+{
+  "quality_score": 0.611009361623122,
+  "issues": [
+    {
+      "type": "low_face_coverage",
+      "severity": "info",
+      "value": 0.0
+    }
+  ],
+  "frames": 51
+}
