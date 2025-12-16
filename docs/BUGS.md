@@ -12,6 +12,14 @@
 
 ---
 
+## ⚠️ Known Limitations
+
+### BUG-004: RTMPose Returns 0.00 Score on Low-End Hardware
+**Severity**: Medium (Hardware dependent)
+**Component**: Tracking (RTMPose)
+**Observed**: On machines without a dedicated NVIDIA GPU (or purely CPU), RTMPose often times out or fails to initialize the detector correctly for the first frame, resulting in all-zero quality scores.
+**Workaround**: Use `MediaPipe` for local/CPU testing. Deploy RTMPose only on machines meeting the specs in `DEPLOYMENT.md`.
+
 ## ✅ Resolved Bugs
 
 ## BUG-003: MediaPipe Zero Confidence & Low Quality Scores

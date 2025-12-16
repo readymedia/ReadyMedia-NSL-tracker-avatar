@@ -95,7 +95,21 @@ We use two competing technologies to track the Sign Language moves.
 
 ---
 
+## 🛑 How to Stop Processing?
+Currently, the processing loop runs until completion. To **force stop** the system:
+1.  Go to the Terminal / Command Prompt where the script is running.
+2.  Press **`Ctrl + C`** on your keyboard (sometimes twice).
+3.  Restart the GUI with `python -m scripts.gui`.
+*Note: A dedicated "Stop" button is planned for Phase 3.*
+
+---
+
 ## 📉 3. Interpreting Output Data
+
+### Troubleshooting "Quality: 0.00"
+If you see a score of `0.00` (especially with RTMPose):
+*   **Cause**: Your PC likely ran out of memory (RAM/VRAM) or the CPU was too slow to process the frames in time, causing the detector to timeout.
+*   **Solution**: Switch to **MediaPipe** on this machine, or move to a PC with a dedicated NVIDIA GPU (See `DEPLOYMENT.md`).
 
 When looking at the `meta.json` or Quality Logs:
 

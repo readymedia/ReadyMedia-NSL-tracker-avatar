@@ -21,6 +21,8 @@
 | F009 | RTMPose Integration | 2 | P1 | ⭐⭐⭐ Hard | ✅ Done | - |
 | F010 | MetaHuman Mapping | 2.1 | P0 | ⭐⭐⭐⭐ Very Hard | ⏸️ Planned | - |
 | F011 | Unreal Import Script | 2.1 | P1 | ⭐⭐⭐ Hard | ⏸️ Planned | - |
+| F012 | Stop Processing Button | 3 | P1 | ⭐⭐ Medium | ⏸️ Planned | - |
+| F013 | Resume Previous Run | 3 | P1 | ⭐⭐⭐ Hard | ⏸️ Planned | - |
 
 **Legend:**
 - **Priority**: P0 (Critical) → P1 (High) → P2 (Medium) → P3 (Low)
